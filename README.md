@@ -9,7 +9,11 @@ Example
     from pyfun import *
     from operator import *
 
-    add = Fn(lambda a,b: a + b)
+    # Lets pre wrap some standard functions
+    mul    = Fn(mul)
+    add    = Fn(add)
+    reduce = Fn(reduce)
+    range  = Fn(range)
 
     # Curry a function
     add2 = add % 2
@@ -21,8 +25,8 @@ Example
     add6 = add2 | add2 | add2
 
     # factorial example
-    fac = Fn(reduce) % mul | Fn(range) % 1 | Fn(add) % 1
-       
+    fac = reduce % mul | range % 1 | add % 1
+
     # > fac(5)
     # 120
 
