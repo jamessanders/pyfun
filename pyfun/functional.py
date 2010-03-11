@@ -1,6 +1,6 @@
 from functional import *
 
-__all__ = ["Fn","curry","combine","call"]
+__all__ = ["Fn","curry","combine","call","flip"]
 
 def can_call(obj):
     if callable(obj): return obj
@@ -38,7 +38,7 @@ class Fn:
         """combine two functions into one"""
         f = can_call(fn)
         def aux(*args,**kwargs):
-            return f(self._fn(*args,**kwargs))
+            return self._fn(f(*args,**kwargs))
         return Fn(aux)
     
 def curry(fn,*args,**kwargs):
@@ -50,3 +50,18 @@ def combine(f1,f2):
 def wrapFn(f): return Fn(f)
 
 def call(fn): return can_call(fn)()
+
+
+try:
+    reversed
+except NameError:
+    def reversed(seq):
+        rev = list(seq)
+        rev.reverse()
+        return iter(rev)
+
+def flip(fn):
+    func = can_call(fn)
+    def flipped_func(*args, **kwargs):
+        return func(*reversed(args), **kwargs)
+    return Fn(flipped_func)
